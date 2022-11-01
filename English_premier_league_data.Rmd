@@ -1,0 +1,88 @@
+---
+title: "LBB"
+author: "David Widyanto"
+date: "10/10/2022"
+perihal : "English PRemier league stats 1992-2021"
+output:
+  html_document:
+    theme: cosmo
+    highlight: tango
+    toc: true
+    toc_float:
+      collapsed: true
+    df_print: paged
+---
+```{r}
+bola <- read.csv(file = "premier_league.csv")
+```
+```{r}
+install.packages("foreign")
+
+```
+```{r}
+install.packages("readxl")
+```
+
+```{r}
+#melihat contoh data
+head(bola,n=10)
+```
+
+```{r}
+#ubah format
+bola$Point_Home <- as.integer(bola$Point_Home)
+bola$Point_Away <- as.integer(bola$Point_Away)
+head(bola,n=10)
+```
+
+```{r}
+#melihat struktur data
+str(bola)
+```
+```{r}
+#melihat baris data
+nrow(bola)
+```
+
+```{r}
+#cek missing value
+anyNA(bola)
+is.na(bola)
+```
+```{r}
+# install_github("Rdatatable/data.table", build_vignettes = FALSE)
+#library(data.table) ## v >= 1.9.5
+```
+```{r}
+#remove NA
+bola <- bola[complete.cases(bola), ]
+anyNA(bola)
+```
+```{r}
+head(bola,n=10)
+```
+
+
+```{r}
+#rata2 top 10 team mencetakgoal - HOME
+home <- aggregate(Skor_Home ~ Home, data = bola,FUN = mean)
+head(home[order(home$Skor_Home, decreasing = TRUE),],n=10)
+```
+```{r}
+#rata2 top 10 team mencetakgoal - AWAY
+away <- aggregate(Skor_Away ~ Away, data = bola,FUN = mean)
+head(away[order(away$Skor_Away, decreasing = TRUE),],n=10)
+```
+```{r}
+#10 tim yang sukses di kandang sendiri
+#sum(bola$Home_Stats == 'W')
+home2 <- aggregate(Point_Home ~ Home, data = bola,FUN = mean)
+head(home2[order(home2$Point_Home, decreasing = TRUE),],n=10)
+```
+```{r}
+#10 tim yang sukses di kandang lawan
+#sum(bola$Home_Stats == 'W')
+away2 <- aggregate(Point_Away ~ Away, data = bola,FUN = mean)
+head(away2[order(away2$Point_Away, decreasing = TRUE),],n=10)
+```
+
